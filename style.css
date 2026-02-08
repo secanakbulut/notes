@@ -1,0 +1,120 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #fafaf7;
+  color: #222;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  border-right: 1px solid #e3e3dc;
+  display: flex;
+  flex-direction: column;
+  background: #f4f3ee;
+}
+
+.topbar {
+  padding: 12px;
+  border-bottom: 1px solid #e3e3dc;
+}
+
+#newBtn {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cfcec5;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#newBtn:hover { background: #f7f7f2; }
+
+#noteList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#noteList li {
+  padding: 10px 14px;
+  border-bottom: 1px solid #ecebe4;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#noteList li:hover { background: #ecebe4; }
+
+#noteList li.active {
+  background: #e0ddd0;
+}
+
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.pane {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 20px;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  background: transparent;
+  color: #222;
+}
+
+.actions {
+  border-top: 1px solid #e3e3dc;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f4f3ee;
+}
+
+#deleteBtn {
+  border: 1px solid #cfcec5;
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#deleteBtn:hover { background: #f7e6e6; border-color: #d8a0a0; }
+
+#status {
+  font-size: 12px;
+  color: #888;
+}
+
+@media (max-width: 720px) {
+  body { flex-direction: column; }
+  .sidebar { width: 100%; height: 40vh; }
+}

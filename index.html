@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>notes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="topbar">
+      <button id="newBtn">new note</button>
+    </div>
+    <ul id="noteList"></ul>
+  </aside>
+
+  <main class="editor">
+    <div class="pane">
+      <textarea id="editor" placeholder="# write something"></textarea>
+    </div>
+    <div class="actions">
+      <button id="deleteBtn">delete</button>
+      <span id="status"></span>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
