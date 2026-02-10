@@ -1,5 +1,4 @@
 // notes app, localstorage backed.
-// first commit: just create / edit / delete and persist.
 
 const STORAGE_KEY = "notes.v1";
 
@@ -7,10 +6,16 @@ let notes = load();
 let currentId = notes.length ? notes[0].id : null;
 
 const editor = document.getElementById("editor");
+const preview = document.getElementById("preview");
 const listEl = document.getElementById("noteList");
 const newBtn = document.getElementById("newBtn");
 const delBtn = document.getElementById("deleteBtn");
 const status = document.getElementById("status");
+
+// safer-ish render config. marked already escapes by default.
+if (window.marked) {
+  marked.setOptions({ breaks: true, gfm: true });
+}
 
 function load() {
   try {
@@ -46,30 +51,43 @@ function titleOf(note) {
   return "untitled";
 }
 
-function render() {
+function renderPreview() {
+  const cur = getCurrent();
+  if (!cur) {
+    preview.innerHTML = "";
+    return;
+  }
+  if (window.marked) {
+    preview.innerHTML = marked.parse(cur.body || "");
+  } else {
+    // fallback if cdn fails
+    preview.textContent = cur.body || "";
+  }
+}
+
+function renderList() {
   listEl.innerHTML = "";
   for (const n of notes) {
     const li = document.createElement("li");
     if (n.id === currentId) li.classList.add("active");
-
-    const t = document.createElement("span");
-    t.className = "title";
-    t.textContent = titleOf(n);
-    li.appendChild(t);
-
+    li.textContent = titleOf(n);
     li.addEventListener("click", () => {
       currentId = n.id;
       const cur = getCurrent();
       editor.value = cur ? cur.body : "";
-      render();
+      renderList();
+      renderPreview();
     });
-
     listEl.appendChild(li);
   }
+  status.textContent = notes.length + " notes";
+}
 
+function renderAll() {
   const cur = getCurrent();
   editor.value = cur ? cur.body : "";
-  status.textContent = notes.length + " notes";
+  renderList();
+  renderPreview();
 }
 
 newBtn.addEventListener("click", () => {
@@ -77,7 +95,7 @@ newBtn.addEventListener("click", () => {
   notes.unshift(note);
   currentId = note.id;
   save();
-  render();
+  renderAll();
   editor.focus();
 });
 
@@ -86,7 +104,7 @@ delBtn.addEventListener("click", () => {
   notes = notes.filter(n => n.id !== currentId);
   currentId = notes.length ? notes[0].id : null;
   save();
-  render();
+  renderAll();
 });
 
 editor.addEventListener("input", () => {
@@ -95,10 +113,8 @@ editor.addEventListener("input", () => {
   cur.body = editor.value;
   cur.updated = Date.now();
   save();
-  // re-render only the title for this item, simpler to just re-render the list
-  render();
-  // keep focus + cursor position
-  editor.focus();
+  renderList();
+  renderPreview();
 });
 
-render();
+renderAll();
