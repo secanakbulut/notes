@@ -11,7 +11,9 @@
     <div class="topbar">
       <button id="newBtn">new note</button>
     </div>
+    <input id="searchBox" type="text" placeholder="search..." autocomplete="off" />
     <ul id="noteList"></ul>
+    <p class="hint" id="searchHint">results ranked by tf-idf</p>
   </aside>
 
   <main class="editor">
@@ -26,6 +28,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="search.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

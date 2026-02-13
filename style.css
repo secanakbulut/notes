@@ -39,6 +39,18 @@ body {
 
 #newBtn:hover { background: #f7f7f2; }
 
+#searchBox {
+  margin: 10px 12px 6px;
+  padding: 7px 10px;
+  border: 1px solid #cfcec5;
+  border-radius: 4px;
+  font-size: 13px;
+  background: #fff;
+  outline: none;
+}
+
+#searchBox:focus { border-color: #888; }
+
 #noteList {
   list-style: none;
   margin: 0;
@@ -52,15 +64,41 @@ body {
   border-bottom: 1px solid #ecebe4;
   cursor: pointer;
   font-size: 13px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
 }
 
 #noteList li:hover { background: #ecebe4; }
 
 #noteList li.active {
   background: #e0ddd0;
+}
+
+#noteList .title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#noteList .score {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: #6a6a55;
+  background: #fff;
+  border: 1px solid #e3e3dc;
+  padding: 1px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.hint {
+  font-size: 11px;
+  color: #888;
+  padding: 6px 14px 10px;
+  margin: 0;
 }
 
 .editor {

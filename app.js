@@ -4,6 +4,7 @@ const STORAGE_KEY = "notes.v1";
 
 let notes = load();
 let currentId = notes.length ? notes[0].id : null;
+let query = "";
 
 const editor = document.getElementById("editor");
 const preview = document.getElementById("preview");
@@ -11,8 +12,9 @@ const listEl = document.getElementById("noteList");
 const newBtn = document.getElementById("newBtn");
 const delBtn = document.getElementById("deleteBtn");
 const status = document.getElementById("status");
+const searchBox = document.getElementById("searchBox");
+const searchHint = document.getElementById("searchHint");
 
-// safer-ish render config. marked already escapes by default.
 if (window.marked) {
   marked.setOptions({ breaks: true, gfm: true });
 }
@@ -60,17 +62,42 @@ function renderPreview() {
   if (window.marked) {
     preview.innerHTML = marked.parse(cur.body || "");
   } else {
-    // fallback if cdn fails
     preview.textContent = cur.body || "";
   }
 }
 
 function renderList() {
   listEl.innerHTML = "";
-  for (const n of notes) {
+
+  let view;
+  if (query.trim()) {
+    const ranked = window.tfidfSearch(query, notes);
+    view = ranked.map(r => ({ note: notes.find(n => n.id === r.id), score: r.score }));
+    searchHint.textContent = view.length
+      ? "showing " + view.length + " of " + notes.length + " by tf-idf score"
+      : "no matches";
+  } else {
+    view = notes.map(n => ({ note: n, score: null }));
+    searchHint.textContent = "results ranked by tf-idf";
+  }
+
+  for (const { note: n, score } of view) {
+    if (!n) continue;
     const li = document.createElement("li");
     if (n.id === currentId) li.classList.add("active");
-    li.textContent = titleOf(n);
+
+    const t = document.createElement("span");
+    t.className = "title";
+    t.textContent = titleOf(n);
+    li.appendChild(t);
+
+    if (score !== null) {
+      const s = document.createElement("span");
+      s.className = "score";
+      s.textContent = score.toFixed(3);
+      li.appendChild(s);
+    }
+
     li.addEventListener("click", () => {
       currentId = n.id;
       const cur = getCurrent();
@@ -78,8 +105,10 @@ function renderList() {
       renderList();
       renderPreview();
     });
+
     listEl.appendChild(li);
   }
+
   status.textContent = notes.length + " notes";
 }
 
@@ -115,6 +144,11 @@ editor.addEventListener("input", () => {
   save();
   renderList();
   renderPreview();
+});
+
+searchBox.addEventListener("input", (e) => {
+  query = e.target.value;
+  renderList();
 });
 
 renderAll();
