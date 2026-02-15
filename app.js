@@ -151,4 +151,12 @@ searchBox.addEventListener("input", (e) => {
   renderList();
 });
 
+// cmd/ctrl + n for a new note
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+    e.preventDefault();
+    newBtn.click();
+  }
+});
+
 renderAll();
