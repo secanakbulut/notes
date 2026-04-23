@@ -1,5 +1,7 @@
 # notes
 
+![](docs/screenshot.png)
+
 Plain markdown notes in the browser. Nothing fancy. The one thing I cared about was the search, so it ranks by relevance instead of just substring matching.
 
 ## Run it
